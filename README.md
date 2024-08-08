@@ -53,7 +53,7 @@ python scraper.py https://example.myshopify.com -c collection1 collection2
 ```
 
 ## Contributors
-- [Koprjaa(https://github.com/koprjaa)
+- Koprjaa(https://github.com/koprjaa)
 
 ## License
 This project is licensed under the MIT License.
