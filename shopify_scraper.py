@@ -127,6 +127,7 @@ def extract_products_collection(url, col):
     col (str): The handle of the collection to extract products from.
 
     Yields:
+
     dict: A dictionary containing information about each product variant.
     """
     page = 1
