@@ -144,3 +144,64 @@ def test_a_refused_collection_listing_raises(monkeypatch):
     always_fails(monkeypatch)
     with pytest.raises(s.ShopifyRequestError):
         list(s.get_page_collections(STORE))
+
+
+# --- which endpoints a run actually calls ------------------------------------
+
+PRODUCT = {
+    "title": "Sock",
+    "handle": "sock",
+    "images": [],
+    "variants": [{"title": "Default Title", "price": "10.00"}],
+}
+
+
+def record_urls(monkeypatch, tmp_path):
+    """Answer every request plausibly and remember which URLs were asked for."""
+    seen = []
+
+    def get(url, **kwargs):
+        seen.append(url)
+        if "/collections.json" in url:
+            page = url.rsplit("page=", 1)[-1]
+            return Response(payload={"collections": [{"handle": "listed"}] if page == "1" else []})
+        if "/products.json" in url:
+            page = url.rsplit("page=", 1)[-1]
+            return Response(payload={"products": [PRODUCT] if page == "1" else []})
+        return Response(payload={})
+
+    monkeypatch.setattr(s.requests, "get", get)
+    monkeypatch.setattr(s.Settings, "OUTPUT_FOLDER", str(tmp_path))
+    return seen
+
+
+def test_a_named_collection_is_fetched_without_listing_every_collection(monkeypatch, tmp_path):
+    """/collections.json omits smart collections, so filtering against it dropped
+    a valid handle and returned nothing. It is also a request per page for a
+    listing the caller already told us it does not need."""
+    seen = record_urls(monkeypatch, tmp_path)
+    s.extract_products(STORE, ["socks"])
+    assert not any("/collections.json" in u for u in seen)
+    assert any("/collections/socks/products.json" in u for u in seen)
+
+
+def test_a_named_collection_that_is_not_in_the_listing_still_yields_products(monkeypatch, tmp_path):
+    record_urls(monkeypatch, tmp_path)
+    s.extract_products(STORE, ["socks"])
+    csv_files = list(Path(tmp_path).rglob("*.csv"))
+    assert csv_files, "no CSV written"
+    assert len(csv_files[0].read_text(encoding="utf-8").strip().splitlines()) == 2
+
+
+def test_without_a_named_collection_the_listing_is_used(monkeypatch, tmp_path):
+    seen = record_urls(monkeypatch, tmp_path)
+    s.extract_products(STORE, None)
+    assert any("/collections.json" in u for u in seen)
+    assert any("/collections/listed/products.json" in u for u in seen)
+
+
+def test_several_named_collections_are_each_fetched(monkeypatch, tmp_path):
+    seen = record_urls(monkeypatch, tmp_path)
+    s.extract_products(STORE, ["socks", "shoes"])
+    for handle in ("socks", "shoes"):
+        assert any(f"/collections/{handle}/products.json" in u for u in seen)

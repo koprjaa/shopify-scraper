@@ -286,11 +286,16 @@ def extract_products(url, collections=None):
 
     # Extract all products
     logger.info("Extracting products...")
-    for col in get_page_collections(url):
-        if collections and col["handle"] not in collections:
-            continue
-        logger.info(f"Extracting products from collection: {col['handle']}")
-        for product in extract_products_collection(url, col["handle"]):
+
+    # A handle the caller named is fetched straight from its own endpoint. Walking
+    # the whole listing and filtering afterwards costs a request per page of
+    # collections, and /collections.json omits smart collections, so a perfectly
+    # valid handle was silently skipped and the run finished with nothing.
+    handles = collections or (col["handle"] for col in get_page_collections(url))
+
+    for handle in handles:
+        logger.info(f"Extracting products from collection: {handle}")
+        for product in extract_products_collection(url, handle):
             # Use product URL as the unique identifier
             if product["URL"] not in unique_products:
                 unique_products[product["URL"]] = product
