@@ -1,3 +1,17 @@
+#
+# Project: shopify-scraper
+# File:    products.py
+#
+# Description:
+# Turns a Shopify product into one CSV row per variant.
+#
+# Author:
+# Jan Alexandr Kopřiva
+# jan.alexandr.kopriva@gmail.com
+#
+# License: MIT
+#
+
 """Turning a Shopify product into the rows that go into the CSV.
 
 Every Shopify store serves the same JSON at /products.json, so the shape of a

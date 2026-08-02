@@ -1,3 +1,17 @@
+#
+# Project: shopify-scraper
+# File:    test_products.py
+#
+# Description:
+# Tests for turning a Shopify product into CSV rows.
+#
+# Author:
+# Jan Alexandr Kopřiva
+# jan.alexandr.kopriva@gmail.com
+#
+# License: MIT
+#
+
 """Tests for turning a Shopify product into CSV rows. No network.
 
 The product below is the shape /products.json serves: a product with shared

@@ -1,3 +1,17 @@
+#
+# Project: shopify-scraper
+# File:    shopify_scraper.py
+#
+# Description:
+# Reads products and collections from a Shopify store and writes them to CSV along with their images.
+#
+# Author:
+# Jan Alexandr Kopřiva
+# jan.alexandr.kopriva@gmail.com
+#
+# License: MIT
+#
+
 import argparse
 import csv
 import logging
