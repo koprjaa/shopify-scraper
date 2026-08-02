@@ -53,8 +53,9 @@ class Settings:
     # Maximum number of retries for failed requests
     MAX_RETRIES = 3
 
-    # Delay between retries (in seconds)
-    RETRY_DELAY = 180
+    # Seconds before the first retry. Doubles on each further attempt, so three
+    # attempts wait 5 + 10 rather than 180 + 180.
+    RETRY_DELAY = 5
 
     # Logging level (1=error, 2=info, 3=debug)
     LOG_LEVEL = 2
@@ -111,10 +112,19 @@ def make_request(url, headers=None):
             logger.debug(f"Request to {url} successful")
             return response.json()
         except requests.RequestException as e:
+            if attempt == Settings.MAX_RETRIES - 1:
+                logger.warning(f"Request failed (attempt {attempt + 1}/{Settings.MAX_RETRIES}): {e}.")
+                break
+            # Back off rather than sleeping the same delay every time. A flat 180
+            # seconds meant three attempts against a store that does not answer
+            # took nine minutes and looked like a hang. There is also no reason
+            # to sleep after the last attempt, which the old loop always did.
+            delay = Settings.RETRY_DELAY * (2**attempt)
             logger.warning(
-                f"Request failed (attempt {attempt + 1}/{Settings.MAX_RETRIES}): {e}. Retrying in {Settings.RETRY_DELAY} seconds..."
+                f"Request failed (attempt {attempt + 1}/{Settings.MAX_RETRIES}): {e}. "
+                f"Retrying in {delay} seconds..."
             )
-            time.sleep(Settings.RETRY_DELAY)
+            time.sleep(delay)
 
     # Raise rather than return None. The callers treat an empty result as the end
     # of pagination, so returning None on failure made a store that refused every
@@ -123,6 +133,24 @@ def make_request(url, headers=None):
     raise ShopifyRequestError(
         f"Failed to retrieve data from {url} after {Settings.MAX_RETRIES} attempts."
     )
+
+
+def store_name_from_url(url):
+    """Short name for a store, used for the output folder and the CSV name.
+
+    Taking the first label of the hostname gave "www" for every store that uses
+    it, so www.allbirds.com and www.example.com both wrote to www_export_* and
+    the second run overwrote the first. The www prefix is dropped before the
+    name is taken.
+
+    Args:
+    url (str): The base URL of the Shopify store.
+
+    Returns:
+    str: The store name, or "store" when the URL carries no host.
+    """
+    host = (urlparse(url).hostname or "").removeprefix("www.")
+    return host.split(".")[0] if host else "store"
 
 
 def get_page(url, page, collection_handle=None):
@@ -255,8 +283,7 @@ def extract_products(url, collections=None):
     total_start_time = time.time()
 
     # Create output folders and log file
-    parsed_url = urlparse(url)
-    store_name = parsed_url.netloc.split(".")[0]  # Extract store name from URL
+    store_name = store_name_from_url(url)
     output_folder, images_folder, log_file = setup_output_folders(
         store_name, Settings.OUTPUT_FOLDER
     )

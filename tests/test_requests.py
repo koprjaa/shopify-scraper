@@ -205,3 +205,57 @@ def test_several_named_collections_are_each_fetched(monkeypatch, tmp_path):
     s.extract_products(STORE, ["socks", "shoes"])
     for handle in ("socks", "shoes"):
         assert any(f"/collections/{handle}/products.json" in u for u in seen)
+
+
+# --- the store name that goes into every output path -------------------------
+
+
+@pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        ("https://www.allbirds.com", "allbirds"),
+        ("https://kith.com", "kith"),
+        ("https://demo.myshopify.com", "demo"),
+        ("https://www.shop.example.co.uk", "shop"),
+        ("http://www.example.com/collections/all", "example"),
+        ("https://WWW.Example.COM", "example"),
+    ],
+)
+def test_the_store_name_comes_from_the_host(url, expected):
+    """It used to be the first label of the hostname, so every www store was
+    called "www" and two of them overwrote each other's export folder."""
+    assert s.store_name_from_url(url) == expected
+
+
+def test_two_www_stores_no_longer_collide():
+    assert s.store_name_from_url("https://www.allbirds.com") != s.store_name_from_url(
+        "https://www.gymshark.com"
+    )
+
+
+def test_a_url_without_a_host_still_gives_a_usable_name():
+    assert s.store_name_from_url("not-a-url") == "store"
+
+
+# --- backoff -----------------------------------------------------------------
+
+
+def test_the_delay_doubles_and_none_is_slept_after_the_last_attempt(monkeypatch):
+    slept = []
+    monkeypatch.setattr(s.time, "sleep", slept.append)
+    monkeypatch.setattr(s.Settings, "RETRY_DELAY", 5)
+    monkeypatch.setattr(s.Settings, "MAX_RETRIES", 3)
+    always_fails(monkeypatch)
+
+    with pytest.raises(s.ShopifyRequestError):
+        s.make_request(f"{STORE}/products.json")
+
+    assert slept == [5, 10], "expected one sleep between attempts, doubling, none at the end"
+
+
+def test_a_successful_request_sleeps_not_at_all(monkeypatch):
+    slept = []
+    monkeypatch.setattr(s.time, "sleep", slept.append)
+    answers(monkeypatch, [{"products": []}])
+    s.make_request(f"{STORE}/products.json")
+    assert slept == []
