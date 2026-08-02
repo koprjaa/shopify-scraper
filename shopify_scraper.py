@@ -15,6 +15,7 @@
 import argparse
 import csv
 import logging
+import sys
 import time
 from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -28,6 +29,10 @@ import requests
 from products import variant_rows
 
 logger = logging.getLogger(__name__)
+
+
+class ShopifyRequestError(RuntimeError):
+    """A request the store never answered, after every retry."""
 
 
 class Settings:
@@ -111,10 +116,13 @@ def make_request(url, headers=None):
             )
             time.sleep(Settings.RETRY_DELAY)
 
-    logger.error(
+    # Raise rather than return None. The callers treat an empty result as the end
+    # of pagination, so returning None on failure made a store that refused every
+    # request look like a store that had run out of pages: the run then wrote a
+    # header-only CSV and reported success.
+    raise ShopifyRequestError(
         f"Failed to retrieve data from {url} after {Settings.MAX_RETRIES} attempts."
     )
-    return None
 
 
 def get_page(url, page, collection_handle=None):
@@ -133,8 +141,7 @@ def get_page(url, page, collection_handle=None):
     if collection_handle:
         full_url = f"{url}/collections/{collection_handle}/products.json?page={page}"
 
-    data = make_request(full_url)
-    return data["products"] if data else []
+    return make_request(full_url).get("products", [])
 
 
 def get_page_collections(url):
@@ -151,7 +158,7 @@ def get_page_collections(url):
     while True:
         full_url = f"{url}/collections.json?page={page}"
         data = make_request(full_url)
-        if not data or not data["collections"]:
+        if not data.get("collections"):
             break
         yield from data["collections"]
         page += 1
@@ -394,5 +401,11 @@ if __name__ == "__main__":
         args.verbosity - 1
     ]
 
-    # Extract products
-    extract_products(args.url, args.collections)
+    # Extract products. A store that never answered is an error, not an empty
+    # catalogue, so it has to reach the exit code rather than a log line.
+    try:
+        extract_products(args.url, args.collections)
+    except ShopifyRequestError as exc:
+        # A store that did not answer needs the reason, not a traceback.
+        logger.error("%s", exc)  # noqa: TRY400
+        sys.exit(1)
