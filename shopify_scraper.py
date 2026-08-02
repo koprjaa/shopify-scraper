@@ -1,14 +1,19 @@
-import time
-import re
-import csv
-import os
-import logging
-from concurrent.futures import ThreadPoolExecutor, as_completed
-import requests
-from datetime import datetime
-from urllib.parse import urlparse
-from collections import OrderedDict
 import argparse
+import csv
+import logging
+import time
+from collections import OrderedDict
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import ClassVar
+from urllib.parse import urlparse
+
+import requests
+
+from products import variant_rows
+
+logger = logging.getLogger(__name__)
 
 
 class Settings:
@@ -39,7 +44,7 @@ class Settings:
     USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36"
 
     # Define the headers for the CSV file
-    HEADERS = [
+    HEADERS: ClassVar[list[str]] = [
         "PRODUCT",
         "URL",
         "PRICE",
@@ -63,11 +68,6 @@ class Settings:
     ]
 
 
-def remove_html_tags(text):
-    """Remove HTML tags"""
-    return re.sub("<[^<]+?>", "", text)
-
-
 def make_request(url, headers=None):
     """
     Make a GET request with retry logic.
@@ -84,20 +84,20 @@ def make_request(url, headers=None):
 
     for attempt in range(Settings.MAX_RETRIES):
         try:
-            logging.debug(
+            logger.debug(
                 f"Attempting request to {url} (Attempt {attempt + 1}/{Settings.MAX_RETRIES})"
             )
             response = requests.get(url, headers=headers)
             response.raise_for_status()
-            logging.debug(f"Request to {url} successful")
+            logger.debug(f"Request to {url} successful")
             return response.json()
         except requests.RequestException as e:
-            logging.warning(
+            logger.warning(
                 f"Request failed (attempt {attempt + 1}/{Settings.MAX_RETRIES}): {e}. Retrying in {Settings.RETRY_DELAY} seconds..."
             )
             time.sleep(Settings.RETRY_DELAY)
 
-    logging.error(
+    logger.error(
         f"Failed to retrieve data from {url} after {Settings.MAX_RETRIES} attempts."
     )
     return None
@@ -163,44 +163,12 @@ def extract_products_collection(url, col):
             break
 
         for product in products:
-            base_product = {
-                "PRODUCT": product["title"],
-                "URL": f"{url}/products/{product['handle']}",
-                "CATEGORY": product["product_type"],
-                "VENDOR": product.get("vendor", ""),
-                "TAGS": ", ".join(product.get("tags", [])),
-                "PUBLISHED_AT": product.get("published_at", ""),
-                "CREATED_AT": product.get("created_at", ""),
-                "UPDATED_AT": product.get("updated_at", ""),
-                "DESCRIPTION": remove_html_tags(str(product["body_html"])),
-                "IMGURL": product["images"][0]["src"] if product["images"] else "",
-            }
-            yield from [
-                {
-                    **base_product,
-                    **{
-                        "PRODUCT": f"{base_product['PRODUCT']} - {variant['title']}".strip(
-                            " -"
-                        ),
-                        "PRICE": variant["price"],
-                        "COMPARE_AT_PRICE": variant.get("compare_at_price", ""),
-                        "STOCK": "Yes" if variant["available"] else "No",
-                        "PRODUCTNO": variant["sku"],
-                        "BARCODE": variant.get("barcode", ""),
-                        "WEIGHT": variant.get("weight", ""),
-                        "WEIGHT_UNIT": variant.get("weight_unit", ""),
-                        "REQUIRES_SHIPPING": "Yes"
-                        if variant.get("requires_shipping", False)
-                        else "No",
-                        "TAXABLE": "Yes" if variant.get("taxable", False) else "No",
-                    },
-                }
-                for variant in product["variants"]
-            ]
-            products_count += len(product["variants"])
+            rows = variant_rows(product, url)
+            yield from rows
+            products_count += len(rows)
 
         page += 1
-        logging.info(f"Extracted {products_count} products from collection '{col}'")
+        logger.info(f"Extracted {products_count} products from collection '{col}'")
 
 
 def download_image(url, folder_path):
@@ -220,14 +188,14 @@ def download_image(url, folder_path):
     try:
         response = requests.get(url)
         response.raise_for_status()
-        filename = os.path.basename(urlparse(url).path)
-        filepath = os.path.join(folder_path, filename)
-        with open(filepath, "wb") as f:
+        filename = Path(urlparse(url).path).name
+        filepath = Path(folder_path) / filename
+        with filepath.open("wb") as f:
             f.write(response.content)
-        logging.debug(f"Downloaded image: {filename}")
+        logger.debug(f"Downloaded image: {filename}")
         return filename
-    except requests.RequestException as e:
-        logging.error(f"Error downloading image from {url}: {str(e)}")
+    except requests.RequestException:
+        logger.exception("Error downloading image from %s", url)
     return None
 
 
@@ -242,15 +210,15 @@ def setup_output_folders(store_name, output_folder):
     Returns:
     tuple: The path to the output folder, images folder, and log file.
     """
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
     folder_name = f"{store_name}_export_{timestamp}"
-    output_folder = os.path.join(output_folder, folder_name)
-    os.makedirs(output_folder, exist_ok=True)
+    output_folder = str(Path(output_folder) / folder_name)
+    Path(output_folder).mkdir(parents=True, exist_ok=True)
 
-    images_folder = os.path.join(output_folder, "images")
-    os.makedirs(images_folder, exist_ok=True)
+    images_folder = str(Path(output_folder) / "images")
+    Path(images_folder).mkdir(parents=True, exist_ok=True)
 
-    log_file = os.path.join(output_folder, Settings.LOG_FILENAME)
+    log_file = str(Path(output_folder) / Settings.LOG_FILENAME)
 
     return output_folder, images_folder, log_file
 
@@ -272,25 +240,25 @@ def extract_products(url, collections=None):
         store_name, Settings.OUTPUT_FOLDER
     )
 
-    # Configure logging to file and terminal
-    logger = logging.getLogger()
-    logger.setLevel(Settings.LOG_LEVEL)
+    # Configure the root logger, so the module logger above propagates into it.
+    root_logger = logging.getLogger()
+    root_logger.setLevel(Settings.LOG_LEVEL)
     formatter = logging.Formatter(
         "%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
     )
 
     file_handler = logging.FileHandler(log_file)
     file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
+    root_logger.addHandler(file_handler)
 
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
+    root_logger.addHandler(console_handler)
 
     logger.info(f"Created output folder: {output_folder}")
     logger.info(f"Created images folder: {images_folder}")
 
-    output_file = os.path.join(output_folder, f"{store_name}_{Settings.CSV_FILENAME}")
+    output_file = str(Path(output_folder) / f"{store_name}_{Settings.CSV_FILENAME}")
 
     # Use OrderedDict to maintain insertion order and remove duplicates
     unique_products = OrderedDict()
@@ -311,7 +279,7 @@ def extract_products(url, collections=None):
     logger.info(f"Total unique products found: {len(unique_products)}")
 
     # Write unique products to CSV
-    with open(output_file, "w", newline="", encoding="utf-8") as csvfile:
+    with Path(output_file).open("w", newline="", encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=Settings.HEADERS)
         writer.writeheader()
         for product in unique_products.values():
@@ -342,10 +310,10 @@ def extract_products(url, collections=None):
             if i % 10 == 0 or i == total_images:
                 logger.info(f"Downloaded {i}/{total_images} images.")
 
-    logger.info(f"Image download completed.")
+    logger.info("Image download completed.")
 
     # Update the CSV with image filenames
-    with open(output_file, "w", newline="", encoding="utf-8") as csvfile:
+    with Path(output_file).open("w", newline="", encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=Settings.HEADERS)
         writer.writeheader()
         for product in unique_products.values():

@@ -43,3 +43,9 @@ Thumbs.db
 # Project specific
 shopify_exports/
 *.log 
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+uv.lock
+.venv/
+shopify_exports/

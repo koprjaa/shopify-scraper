@@ -1,0 +1,54 @@
+[project]
+name = "shopify-scraper"
+version = "1.0.0"
+description = "Read product data from any Shopify store through its public JSON endpoint."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Jan Alexandr Kopřiva", email = "jan.alexandr.kopriva@gmail.com" }]
+keywords = ["shopify", "scraper", "ecommerce", "products", "csv"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+]
+dependencies = ["requests>=2.32"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff==0.16.1"]
+
+[project.urls]
+Homepage = "https://github.com/koprjaa/shopify-scraper"
+Repository = "https://github.com/koprjaa/shopify-scraper"
+Issues = "https://github.com/koprjaa/shopify-scraper/issues"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "N", "SIM", "C4", "RET", "PTH", "TRY", "PERF", "RUF"]
+# E501  line length is handled by the formatter
+# TRY003 one exception subclass per message is ceremony
+ignore = [
+    "E501",    # line length is handled by the formatter
+    "TRY003",  # one exception subclass per message is ceremony
+    # Each guard wraps a single request. The cost is the network call.
+    "PERF203",
+    # The value returned is what the log line above it just described.
+    "TRY300",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+pythonpath = ["."]
+addopts = "-q --strict-markers"
+
+[tool.uv]
+package = false

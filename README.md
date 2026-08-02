@@ -5,6 +5,7 @@ Reads product data from any Shopify store through the public `/products.json` en
 ![python](https://img.shields.io/badge/python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)
 ![license](https://img.shields.io/badge/license-MIT-A31F34?style=flat-square)
 ![status](https://img.shields.io/badge/status-active-22863A?style=flat-square)
+[![ci](https://github.com/koprjaa/shopify-scraper/actions/workflows/ci.yml/badge.svg)](https://github.com/koprjaa/shopify-scraper/actions/workflows/ci.yml)
 
 Every Shopify store serves its catalogue at fixed JSON paths. There is no OAuth step and no app install. The tool pages through every product, unpacks the variants, downloads the images, and writes the result to CSV.
 
@@ -57,6 +58,16 @@ The CSV holds these columns: `PRODUCT`, `URL`, `PRICE`, `COMPARE_AT_PRICE`, `STO
 
 ## How it works
 
+```
+shopify_scraper.py   requests, retries, image download, CSV writing
+products.py          turning one product into its CSV rows
+```
+
+A product carries fields its variants share and a list of variants, and each
+variant becomes one row. A store that never set up variants gets one called
+`Default Title`, which is a Shopify placeholder rather than a name, so the row
+is named after the product alone.
+
 Product pages load one after another. Image downloads run in parallel through a `ThreadPoolExecutor` with no thread cap, because image URLs point at static storage.
 
 The retry delay defaults to 180 seconds. Shopify bans the IP address on bulk reads instead of returning a 429 response.
@@ -67,7 +78,17 @@ The tool works against `.myshopify.com` subdomains and custom domains. Any host 
 
 - The public endpoint exposes no metafields and no private fields. Those need the Shopify Admin API with an access token.
 - The repository history contains a large export of scraped product images from three real stores. Clone with `--depth 1` if you only want the code.
-- No tests.
+- Variant naming changed. A variant called `Default Title` used to produce rows named `Product - Default Title`. It is now named after the product alone.
+
+## Development
+
+```bash
+uv run --extra dev ruff check .
+uv run --extra dev pytest -q
+```
+
+`products.py` makes no requests, so the row building is tested on its own. CI
+runs on Python 3.10, 3.11, and 3.12, across Linux and Windows.
 
 ## License
 
