@@ -104,9 +104,7 @@ def make_request(url, headers=None):
 
     for attempt in range(Settings.MAX_RETRIES):
         try:
-            logger.debug(
-                f"Attempting request to {url} (Attempt {attempt + 1}/{Settings.MAX_RETRIES})"
-            )
+            logger.debug(f"Attempting request to {url} (Attempt {attempt + 1}/{Settings.MAX_RETRIES})")
             response = requests.get(url, headers=headers)
             response.raise_for_status()
             logger.debug(f"Request to {url} successful")
@@ -130,9 +128,7 @@ def make_request(url, headers=None):
     # of pagination, so returning None on failure made a store that refused every
     # request look like a store that had run out of pages: the run then wrote a
     # header-only CSV and reported success.
-    raise ShopifyRequestError(
-        f"Failed to retrieve data from {url} after {Settings.MAX_RETRIES} attempts."
-    )
+    raise ShopifyRequestError(f"Failed to retrieve data from {url} after {Settings.MAX_RETRIES} attempts.")
 
 
 def store_name_from_url(url):
@@ -284,16 +280,12 @@ def extract_products(url, collections=None):
 
     # Create output folders and log file
     store_name = store_name_from_url(url)
-    output_folder, images_folder, log_file = setup_output_folders(
-        store_name, Settings.OUTPUT_FOLDER
-    )
+    output_folder, images_folder, log_file = setup_output_folders(store_name, Settings.OUTPUT_FOLDER)
 
     # Configure the root logger, so the module logger above propagates into it.
     root_logger = logging.getLogger()
     root_logger.setLevel(Settings.LOG_LEVEL)
-    formatter = logging.Formatter(
-        "%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
-    )
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
     file_handler = logging.FileHandler(log_file)
     file_handler.setFormatter(formatter)
@@ -341,9 +333,7 @@ def extract_products(url, collections=None):
     logger.info(f"Unique product data saved to {output_file}")
 
     # Download images for unique products
-    products_to_download = [
-        product for product in unique_products.values() if product["IMGURL"]
-    ]
+    products_to_download = [product for product in unique_products.values() if product["IMGURL"]]
     total_images = len(products_to_download)
     logger.info(f"Starting download of {total_images} unique product images")
 
@@ -384,21 +374,15 @@ if __name__ == "__main__":
     # Set up the command-line argument parser
     parser = argparse.ArgumentParser(description="Shopify product scraper")
     parser.add_argument("url", help="Shopify store URL")
-    parser.add_argument(
-        "-c", "--collections", nargs="+", help="List of collection handles to extract"
-    )
+    parser.add_argument("-c", "--collections", nargs="+", help="List of collection handles to extract")
     parser.add_argument(
         "-o",
         "--output-folder",
         default=Settings.OUTPUT_FOLDER,
         help="Output folder path",
     )
-    parser.add_argument(
-        "-f", "--csv-filename", default=Settings.CSV_FILENAME, help="CSV file name"
-    )
-    parser.add_argument(
-        "-l", "--log-filename", default=Settings.LOG_FILENAME, help="Log file name"
-    )
+    parser.add_argument("-f", "--csv-filename", default=Settings.CSV_FILENAME, help="CSV file name")
+    parser.add_argument("-l", "--log-filename", default=Settings.LOG_FILENAME, help="Log file name")
     parser.add_argument(
         "-r",
         "--max-retries",
@@ -429,9 +413,7 @@ if __name__ == "__main__":
     Settings.LOG_FILENAME = args.log_filename
     Settings.MAX_RETRIES = args.max_retries
     Settings.RETRY_DELAY = args.retry_delay
-    Settings.LOG_LEVEL = [logging.ERROR, logging.INFO, logging.DEBUG][
-        args.verbosity - 1
-    ]
+    Settings.LOG_LEVEL = [logging.ERROR, logging.INFO, logging.DEBUG][args.verbosity - 1]
 
     # Extract products. A store that never answered is an error, not an empty
     # catalogue, so it has to reach the exit code rather than a log line.
