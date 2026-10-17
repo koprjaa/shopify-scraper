@@ -1,0 +1,18 @@
+[package]
+name = "shopify-scraper"
+version = "1.0.0"
+edition = "2021"
+authors = ["Jan Alexandr Kopřiva"]
+license = "MIT"
+description = "Read product data from any Shopify store through its public JSON endpoint."
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "json", "gzip", "deflate", "socks"] }
+serde_json = "1"
+csv = "1"
+clap = { version = "4", features = ["derive"] }
+chrono = "0.4"
+regex = "1"
+
+[dev-dependencies]
+tempfile = "3"
