@@ -4,7 +4,7 @@ version = "1.0.0"
 edition = "2021"
 authors = ["Jan Alexandr Kopřiva"]
 license = "MIT"
-description = "Read product data from any Shopify store through its public JSON endpoint."
+description = "Exports the product feed of any Shopify store."
 
 [dependencies]
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "json", "gzip", "deflate", "socks"] }
