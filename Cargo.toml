@@ -7,8 +7,9 @@ license = "MIT"
 description = "Exports the product feed of any Shopify store."
 
 [dependencies]
-reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "json", "gzip", "deflate", "socks"] }
-serde_json = "1"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "gzip", "deflate", "socks"] }
+encoding_rs = "0.8"
+serde_json = { version = "1", features = ["preserve_order"] }
 csv = "1"
 clap = { version = "4", features = ["derive"] }
 chrono = "0.4"

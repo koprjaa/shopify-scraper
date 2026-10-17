@@ -96,3 +96,22 @@ fn failure_exit_one_and_no_success_message() {
     assert!(!stderr.contains("successfully"));
     assert!(!stderr.contains("WARNING"));
 }
+
+#[test]
+fn repeated_options_use_the_last_value_like_argparse() {
+    let s = Settings::try_parse_from([
+        "scraper",
+        "http://localhost",
+        "-r",
+        "1",
+        "-r",
+        "2",
+        "-c",
+        "a",
+        "-c",
+        "b",
+    ])
+    .unwrap();
+    assert_eq!(s.max_retries, 2);
+    assert_eq!(s.collections, ["b"]);
+}

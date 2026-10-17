@@ -45,8 +45,75 @@ pub fn py_string(v: &Value) -> String {
         Value::Bool(true) => "True".into(),
         Value::Bool(false) => "False".into(),
         Value::String(s) => s.clone(),
-        _ => v.to_string(),
+        Value::Array(a) => format!("[{}]", a.iter().map(py_repr).collect::<Vec<_>>().join(", ")),
+        Value::Object(o) => format!(
+            "{{{}}}",
+            o.iter()
+                .map(|(k, v)| format!("{}: {}", py_repr(&Value::String(k.clone())), py_repr(v)))
+                .collect::<Vec<_>>()
+                .join(", ")
+        ),
+        Value::Number(n) => {
+            let text = if let Some(f) = n.as_f64().filter(|_| n.is_f64()) {
+                if f != 0.0 && (f.abs() < 1e-4 || f.abs() >= 1e16) {
+                    format!("{f:e}")
+                } else {
+                    n.to_string()
+                }
+            } else {
+                n.to_string()
+            };
+            if let Some((mantissa, exponent)) = text.split_once('e') {
+                if let Ok(exponent) = exponent.parse::<i32>() {
+                    return format!("{mantissa}e{exponent:+03}");
+                }
+            }
+            text
+        }
     }
+}
+fn py_repr(v: &Value) -> String {
+    let Value::String(s) = v else {
+        return py_string(v);
+    };
+    let quote = if s.contains('\'') && !s.contains('"') {
+        '"'
+    } else {
+        '\''
+    };
+    let mut result = String::from(quote);
+    for c in s.chars() {
+        match c {
+            '\\' => result.push_str("\\\\"),
+            '\n' => result.push_str("\\n"),
+            '\r' => result.push_str("\\r"),
+            '\t' => result.push_str("\\t"),
+            c if c == quote => {
+                result.push('\\');
+                result.push(c);
+            }
+            c if !python_printable(c) => {
+                let value = c as u32;
+                if value <= 0xff {
+                    result.push_str(&format!("\\x{value:02x}"));
+                } else if value <= 0xffff {
+                    result.push_str(&format!("\\u{value:04x}"));
+                } else {
+                    result.push_str(&format!("\\U{value:08x}"));
+                }
+            }
+            c => result.push(c),
+        }
+    }
+    result.push(quote);
+    result
+}
+fn python_printable(c: char) -> bool {
+    static NONPRINTABLE: OnceLock<regex::Regex> = OnceLock::new();
+    c == ' '
+        || !NONPRINTABLE
+            .get_or_init(|| regex::Regex::new(r"[\p{C}\p{Z}]").unwrap())
+            .is_match(c.encode_utf8(&mut [0; 4]))
 }
 pub fn cell(v: &Value) -> String {
     if v.is_null() {
@@ -107,11 +174,17 @@ pub fn product_fields(p: &Value, url: &str) -> Row {
     );
     r.insert(
         "TAGS".into(),
-        p["tags"]
-            .as_array()
-            .map(|a| a.iter().map(py_string).collect::<Vec<_>>().join(", "))
-            .unwrap_or_default()
-            .into(),
+        match &p["tags"] {
+            Value::Array(a) => a.iter().map(py_string).collect::<Vec<_>>().join(", "),
+            Value::String(s) => s
+                .chars()
+                .map(|c| c.to_string())
+                .collect::<Vec<_>>()
+                .join(", "),
+            Value::Object(o) => o.keys().cloned().collect::<Vec<_>>().join(", "),
+            _ => String::new(),
+        }
+        .into(),
     );
     r.insert(
         "DESCRIPTION".into(),

@@ -1,5 +1,4 @@
 /target/
-/.cargo/
 .idea/
 .vscode/
 *.swp
@@ -8,7 +7,7 @@
 Thumbs.db
 shopify_exports/
 *.log
-
+/.cargo/
 /.tmp/
 __pycache__/
 *.py[cod]

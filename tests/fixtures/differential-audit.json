@@ -1,0 +1,2619 @@
+{
+  "description": "Captured original and final CLI runs against a loopback HTTP server. Ports normalized; large strings replaced by byte lengths and SHA-256 digests.",
+  "before": [
+    {
+      "case": "string_tags",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "tags": "ab"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "a, b",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "container_description",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": [
+          true,
+          null,
+          "x"
+        ]
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "[True, None, 'x']",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "[true,null,\"x\"]",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "float_description",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": 1e-07
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "1e-07",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "1e-7",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "malformed_products",
+      "input": null,
+      "Python": {
+        "exit": 1,
+        "rows": [],
+        "error": [
+          "TypeError: 'int' object is not iterable"
+        ]
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [],
+        "error": []
+      }
+    },
+    {
+      "case": "variants",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {
+            "title": "Default Title"
+          },
+          {
+            "title": "Blue"
+          }
+        ]
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          },
+          {
+            "PRODUCT": "X - Blue",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "bad_tags",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "tags": [
+          1,
+          true
+        ]
+      },
+      "Python": {
+        "exit": 1,
+        "rows": [],
+        "error": [
+          "TypeError: sequence item 0: expected str instance, int found"
+        ]
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "1, True",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "tags_object",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "tags": {
+          "z": 1,
+          "a": 2
+        }
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "z, a",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "unicode_crlf",
+      "input": {
+        "title": "Žluť, \"kůň\"\r\nX",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": "﻿<p>A</p>\r\nB"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "Žluť, \"kůň\"\nX",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "﻿A\nB",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "Žluť, \"kůň\"\nX",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "﻿A\nB",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "nulls",
+      "input": {
+        "title": null,
+        "handle": null,
+        "variants": [
+          {
+            "title": null,
+            "price": null
+          }
+        ],
+        "images": null,
+        "tags": null
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "",
+            "URL": "http://127.0.0.1:PORT/products/None",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "",
+            "URL": "http://127.0.0.1:PORT/products/None",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "large_description",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": {
+          "utf8_bytes": 1000000,
+          "sha256": "1b977e9f84f1b26b6ed7f68b0498faee2385ea4125bd29adce4a7d9106ba3134"
+        }
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": {
+              "utf8_bytes": 1000000,
+              "sha256": "1b977e9f84f1b26b6ed7f68b0498faee2385ea4125bd29adce4a7d9106ba3134"
+            },
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": {
+              "utf8_bytes": 1000000,
+              "sha256": "1b977e9f84f1b26b6ed7f68b0498faee2385ea4125bd29adce4a7d9106ba3134"
+            },
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "object_description",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": {
+          "z": true,
+          "a": null
+        }
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "{'z': True, 'a': None}",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "{\"a\":null,\"z\":true}",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "empty_variants",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": []
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [],
+        "error": []
+      }
+    },
+    {
+      "case": "html_edges",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": "a<<p>\nX</p><>z &amp;"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "a<\nX<>z &amp;",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "a<\nX<>z &amp;",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    },
+    {
+      "case": "bool_fields",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {
+            "available": [],
+            "taxable": [
+              0
+            ],
+            "requires_shipping": {}
+          }
+        ]
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "Yes",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "Yes",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "error": []
+      }
+    }
+  ],
+  "after": [
+    {
+      "case": "bom_json",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "_encoding": "utf-8-sig"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "utf32_json",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "_encoding": "utf-32"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "utf16_json",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "_encoding": "utf-16"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "empty_body",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "_encoding": "empty"
+      },
+      "Python": {
+        "exit": 1,
+        "rows": [],
+        "requests": 3,
+        "images": {},
+        "error": [
+          "2026-10-17 23:39:58 - ERROR - Failed to retrieve data from http://127.0.0.1:PORT/collections/socks/products.json?page=1 after 3 attempts."
+        ]
+      },
+      "Rust": {
+        "exit": 1,
+        "rows": [],
+        "requests": 3,
+        "images": {},
+        "error": [
+          "2026-10-17 23:39:58 - ERROR - Failed to retrieve data from http://127.0.0.1:PORT/collections/socks/products.json?page=1 after 3 attempts."
+        ]
+      }
+    },
+    {
+      "case": "http_429",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "_status": 429
+      },
+      "Python": {
+        "exit": 1,
+        "rows": [],
+        "requests": 3,
+        "images": {},
+        "error": [
+          "2026-10-17 23:39:58 - ERROR - Failed to retrieve data from http://127.0.0.1:PORT/collections/socks/products.json?page=1 after 3 attempts."
+        ]
+      },
+      "Rust": {
+        "exit": 1,
+        "rows": [],
+        "requests": 3,
+        "images": {},
+        "error": [
+          "2026-10-17 23:39:58 - ERROR - Failed to retrieve data from http://127.0.0.1:PORT/collections/socks/products.json?page=1 after 3 attempts."
+        ]
+      }
+    },
+    {
+      "case": "flaky_retry",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "_flaky": true
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 4,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 4,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "malformed_images",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "images": [
+          {}
+        ]
+      },
+      "Python": {
+        "exit": 1,
+        "rows": [],
+        "requests": 1,
+        "images": {},
+        "error": [
+          "KeyError: 'src'"
+        ]
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "malformed_variants",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": "bad"
+      },
+      "Python": {
+        "exit": 1,
+        "rows": [],
+        "requests": 1,
+        "images": {},
+        "error": [
+          "AttributeError: 'str' object has no attribute 'get'"
+        ]
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "image_collisions",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "_products": [
+          {
+            "title": "A",
+            "handle": "a",
+            "images": [
+              {
+                "src": "http://127.0.0.1:PORT/a/x.jpg"
+              }
+            ],
+            "variants": [
+              {}
+            ]
+          },
+          {
+            "title": "B",
+            "handle": "b",
+            "images": [
+              {
+                "src": "http://127.0.0.1:PORT/b/x.jpg"
+              }
+            ],
+            "variants": [
+              {}
+            ]
+          }
+        ]
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "A",
+            "URL": "http://127.0.0.1:PORT/products/a",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "http://127.0.0.1:PORT/a/x.jpg",
+            "IMAGE_FILENAME": "x.jpg"
+          },
+          {
+            "PRODUCT": "B",
+            "URL": "http://127.0.0.1:PORT/products/b",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "http://127.0.0.1:PORT/b/x.jpg",
+            "IMAGE_FILENAME": "x.jpg"
+          }
+        ],
+        "requests": 4,
+        "images": {
+          "x.jpg": "2f622f782e6a7067"
+        },
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "A",
+            "URL": "http://127.0.0.1:PORT/products/a",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "http://127.0.0.1:PORT/a/x.jpg",
+            "IMAGE_FILENAME": "x.jpg"
+          },
+          {
+            "PRODUCT": "B",
+            "URL": "http://127.0.0.1:PORT/products/b",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "http://127.0.0.1:PORT/b/x.jpg",
+            "IMAGE_FILENAME": "x_2.jpg"
+          }
+        ],
+        "requests": 4,
+        "images": {
+          "x.jpg": "2f612f782e6a7067",
+          "x_2.jpg": "2f622f782e6a7067"
+        },
+        "error": []
+      }
+    },
+    {
+      "case": "shared_image",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "images": [
+          {
+            "src": "http://127.0.0.1:PORT/a/x.jpg"
+          }
+        ]
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "http://127.0.0.1:PORT/a/x.jpg",
+            "IMAGE_FILENAME": "x.jpg"
+          }
+        ],
+        "requests": 3,
+        "images": {
+          "x.jpg": "2f612f782e6a7067"
+        },
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "http://127.0.0.1:PORT/a/x.jpg",
+            "IMAGE_FILENAME": "x.jpg"
+          }
+        ],
+        "requests": 3,
+        "images": {
+          "x.jpg": "2f612f782e6a7067"
+        },
+        "error": []
+      }
+    },
+    {
+      "case": "string_tags",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "tags": "ab"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "a, b",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "a, b",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "container_description",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": [
+          true,
+          null,
+          "x"
+        ]
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "[True, None, 'x']",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "[True, None, 'x']",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "float_small",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": 1e-05
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "1e-05",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "1e-05",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "float_large",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": 1e+16
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "1e+16",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "1e+16",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "float_description",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": 1e-07
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "1e-07",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "1e-07",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "malformed_products",
+      "input": null,
+      "Python": {
+        "exit": 1,
+        "rows": [],
+        "requests": 1,
+        "images": {},
+        "error": [
+          "TypeError: 'int' object is not iterable"
+        ]
+      },
+      "Rust": {
+        "exit": 1,
+        "rows": [],
+        "requests": 1,
+        "images": {},
+        "error": [
+          "2026-10-17 23:40:03 - ERROR - products must be an array"
+        ]
+      }
+    },
+    {
+      "case": "variants",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {
+            "title": "Default Title"
+          },
+          {
+            "title": "Blue"
+          }
+        ]
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          },
+          {
+            "PRODUCT": "X - Blue",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "bad_tags",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "tags": [
+          1,
+          true
+        ]
+      },
+      "Python": {
+        "exit": 1,
+        "rows": [],
+        "requests": 1,
+        "images": {},
+        "error": [
+          "TypeError: sequence item 0: expected str instance, int found"
+        ]
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "1, True",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "tags_object",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "tags": {
+          "z": 1,
+          "a": 2
+        }
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "z, a",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "z, a",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "unicode_crlf",
+      "input": {
+        "title": "Žluť, \"kůň\"\r\nX",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": "﻿<p>A</p>\r\nB"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "Žluť, \"kůň\"\nX",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "﻿A\nB",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "Žluť, \"kůň\"\nX",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "﻿A\nB",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "nulls",
+      "input": {
+        "title": null,
+        "handle": null,
+        "variants": [
+          {
+            "title": null,
+            "price": null
+          }
+        ],
+        "images": null,
+        "tags": null
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "",
+            "URL": "http://127.0.0.1:PORT/products/None",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "",
+            "URL": "http://127.0.0.1:PORT/products/None",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "large_description",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": {
+          "utf8_bytes": 1000000,
+          "sha256": "1b977e9f84f1b26b6ed7f68b0498faee2385ea4125bd29adce4a7d9106ba3134"
+        }
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": {
+              "utf8_bytes": 1000000,
+              "sha256": "1b977e9f84f1b26b6ed7f68b0498faee2385ea4125bd29adce4a7d9106ba3134"
+            },
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": {
+              "utf8_bytes": 1000000,
+              "sha256": "1b977e9f84f1b26b6ed7f68b0498faee2385ea4125bd29adce4a7d9106ba3134"
+            },
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "object_description",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": {
+          "z": true,
+          "a": null
+        }
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "{'z': True, 'a': None}",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "{'z': True, 'a': None}",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "empty_variants",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": []
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "html_edges",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {}
+        ],
+        "body_html": "a<<p>\nX</p><>z &amp;"
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "a<\nX<>z &amp;",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "No",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "a<\nX<>z &amp;",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    },
+    {
+      "case": "bool_fields",
+      "input": {
+        "title": "X",
+        "handle": "x",
+        "variants": [
+          {
+            "available": [],
+            "taxable": [
+              0
+            ],
+            "requires_shipping": {}
+          }
+        ]
+      },
+      "Python": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "Yes",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      },
+      "Rust": {
+        "exit": 0,
+        "rows": [
+          {
+            "PRODUCT": "X",
+            "URL": "http://127.0.0.1:PORT/products/x",
+            "PRICE": "",
+            "COMPARE_AT_PRICE": "",
+            "STOCK": "No",
+            "CATEGORY": "",
+            "PRODUCTNO": "",
+            "BARCODE": "",
+            "WEIGHT": "",
+            "WEIGHT_UNIT": "",
+            "REQUIRES_SHIPPING": "No",
+            "TAXABLE": "Yes",
+            "VENDOR": "",
+            "TAGS": "",
+            "PUBLISHED_AT": "",
+            "CREATED_AT": "",
+            "UPDATED_AT": "",
+            "DESCRIPTION": "",
+            "IMGURL": "",
+            "IMAGE_FILENAME": ""
+          }
+        ],
+        "requests": 2,
+        "images": {},
+        "error": []
+      }
+    }
+  ],
+  "additional_checks": [
+    {
+      "case": "repeated_scalar_option",
+      "input": "-r 1 -r 0",
+      "python_exit": 1,
+      "initial_rust_exit": 2,
+      "final_rust": "last value used; Rust regression passed"
+    },
+    {
+      "case": "netrc_unquoted_escapes",
+      "input": "machine localhost login two\\ words password p\\ ass",
+      "python": [
+        "two words",
+        "p ass"
+      ],
+      "initial_rust": null,
+      "final_rust": [
+        "two words",
+        "p ass"
+      ]
+    }
+  ]
+}

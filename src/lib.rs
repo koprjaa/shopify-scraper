@@ -6,6 +6,7 @@
 
 pub mod auth;
 pub mod products;
+pub mod response;
 use chrono::{Local, Utc};
 use clap::Parser;
 use products::{cell, variant_rows, Row, COLUMNS};
@@ -28,12 +29,13 @@ pub const USER_AGENT: &str = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) App
 #[command(
     about = "Shopify product scraper",
     disable_version_flag = true,
-    infer_long_args = true
+    infer_long_args = true,
+    args_override_self = true
 )]
 pub struct Settings {
     #[arg(help = "Shopify store URL")]
     pub url: String,
-    #[arg(short, long, num_args = 1..)]
+    #[arg(short, long, num_args = 1.., action = clap::ArgAction::Set)]
     pub collections: Vec<String>,
     #[arg(short = 'o', long, default_value = "shopify_exports")]
     pub output_folder: PathBuf,
@@ -98,6 +100,9 @@ pub fn store_name_from_url(url: &str) -> String {
     }
 }
 pub fn retry_delay(base: i64, attempt: u32) -> Result<Duration> {
+    if base == 0 {
+        return Ok(Duration::ZERO);
+    }
     let seconds = base
         .checked_mul(2_i64.checked_pow(attempt).ok_or("retry delay overflow")?)
         .ok_or("retry delay overflow")?;
@@ -137,14 +142,22 @@ impl Scraper {
                     self.settings.max_retries
                 ),
             );
-            let answer = authenticated(&self.client, url)
-                .header("User-Agent", USER_AGENT)
-                .header("Accept", "*/*")
-                .header("Accept-Encoding", "gzip, deflate")
-                .header("Connection", "keep-alive")
-                .send()
-                .and_then(|r| r.error_for_status())
-                .and_then(|r| r.json());
+            let answer = (|| -> Result<Value> {
+                let response = authenticated(&self.client, url)
+                    .header("User-Agent", USER_AGENT)
+                    .header("Accept", "*/*")
+                    .header("Accept-Encoding", "gzip, deflate")
+                    .header("Connection", "keep-alive")
+                    .send()?
+                    .error_for_status()?;
+                let content_type = response
+                    .headers()
+                    .get(reqwest::header::CONTENT_TYPE)
+                    .and_then(|h| h.to_str().ok())
+                    .unwrap_or("")
+                    .to_owned();
+                response::decode_json(&response.bytes()?, &content_type)
+            })();
             match answer {
                 Ok(v) => {
                     self.logger
@@ -180,7 +193,19 @@ impl Scraper {
             None => format!("{url}/products.json?page={page}"),
         };
         let data = self.make_request(&endpoint)?;
-        Ok(data["products"].as_array().cloned().unwrap_or_default())
+        if !data.is_object() {
+            return Err("product response must be an object".into());
+        }
+        match data.get("products") {
+            None | Some(Value::Null) => Ok(Vec::new()),
+            Some(Value::Array(products)) => {
+                if products.iter().any(|p| !p.is_object()) {
+                    return Err("products must contain objects".into());
+                }
+                Ok(products.clone())
+            }
+            _ => Err("products must be an array".into()),
+        }
     }
     fn collection(
         &self,
@@ -233,8 +258,14 @@ impl Scraper {
                     "{}/collections.json?page={page}",
                     self.settings.url
                 ))?;
-                let Some(cols) = data["collections"].as_array().filter(|a| !a.is_empty()) else {
-                    break;
+                if !data.is_object() {
+                    return Err("collection response must be an object".into());
+                }
+                let cols = match data.get("collections") {
+                    None | Some(Value::Null) => break,
+                    Some(Value::Array(cols)) if cols.is_empty() => break,
+                    Some(Value::Array(cols)) => cols,
+                    _ => return Err("collections must be an array".into()),
                 };
                 for col in cols {
                     let h = col["handle"].as_str().ok_or("collection missing handle")?;
@@ -469,7 +500,15 @@ pub fn image_names(urls: &[String]) -> Vec<String> {
 }
 
 pub fn http_client() -> Result<Client> {
-    let mut builder = Client::builder().redirect(reqwest::redirect::Policy::limited(30));
+    http_client_with_timeout(Duration::from_secs(30))
+}
+
+pub fn http_client_with_timeout(timeout: Duration) -> Result<Client> {
+    // Bound both stalled connections and stalled response bodies, including image workers.
+    let mut builder = Client::builder()
+        .timeout(timeout)
+        .connect_timeout(timeout)
+        .redirect(reqwest::redirect::Policy::limited(30));
     let bundle = std::env::var_os("REQUESTS_CA_BUNDLE")
         .filter(|v| !v.is_empty())
         .or_else(|| std::env::var_os("CURL_CA_BUNDLE").filter(|v| !v.is_empty()));

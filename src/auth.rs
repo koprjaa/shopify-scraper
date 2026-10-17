@@ -75,12 +75,21 @@ pub fn parse(text: &str, host: &str) -> Option<(String, String)> {
                 return None;
             }
         } else {
-            token.push(c);
+            if c == '\\' {
+                token.push(chars.next()?);
+            } else {
+                token.push(c);
+            }
             while let Some(c) = chars.peek() {
                 if c.is_whitespace() {
                     break;
                 }
-                token.push(chars.next()?);
+                let c = chars.next()?;
+                if c == '\\' {
+                    token.push(chars.next()?);
+                } else {
+                    token.push(c);
+                }
             }
         }
         tokens.push(token);
