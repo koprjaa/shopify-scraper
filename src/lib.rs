@@ -118,7 +118,9 @@ pub struct Scraper {
     pub logger: Logger,
 }
 impl Scraper {
-    pub fn new(settings: Settings, logger: Logger) -> Result<Self> {
+    pub fn new(mut settings: Settings, logger: Logger) -> Result<Self> {
+        // A trailing slash would produce `//products.json` and `//products/<handle>`.
+        settings.url = settings.url.trim_end_matches('/').to_owned();
         Ok(Self {
             settings,
             client: http_client()?,
@@ -247,10 +249,15 @@ impl Scraper {
     }
     pub fn collect(&self) -> Result<Vec<Row>> {
         let mut rows = Vec::new();
+        self.collect_into(&mut rows)?;
+        Ok(rows)
+    }
+    // Fills `rows` as it goes, so a late failure leaves everything gathered so far with the caller.
+    fn collect_into(&self, rows: &mut Vec<Row>) -> Result<()> {
         let mut seen = HashSet::new();
         if !self.settings.collections.is_empty() {
             for h in &self.settings.collections {
-                self.collection(h, &mut rows, &mut seen)?;
+                self.collection(h, rows, &mut seen)?;
             }
         } else {
             for page in 1.. {
@@ -269,11 +276,11 @@ impl Scraper {
                 };
                 for col in cols {
                     let h = col["handle"].as_str().ok_or("collection missing handle")?;
-                    self.collection(h, &mut rows, &mut seen)?;
+                    self.collection(h, rows, &mut seen)?;
                 }
             }
         }
-        Ok(rows)
+        Ok(())
     }
     pub fn download_image(&self, url: &str, folder: &Path) -> Result<Option<String>> {
         self.download_named(url, folder, None)
@@ -333,7 +340,26 @@ impl Scraper {
             &format!("Created images folder: {}", images.display()),
         );
         self.logger.log("INFO", "Extracting products...");
-        let mut rows = self.collect()?;
+        let mut rows = Vec::new();
+        if let Err(error) = self.collect_into(&mut rows) {
+            if !rows.is_empty() {
+                let csv = folder.join(format!(
+                    "{}_{}",
+                    store_name_from_url(&self.settings.url),
+                    self.settings.csv_filename
+                ));
+                write_csv(&csv, &rows)?;
+                self.logger.log(
+                    "ERROR",
+                    &format!(
+                        "Partial product data ({} rows) saved to {}",
+                        rows.len(),
+                        csv.display()
+                    ),
+                );
+            }
+            return Err(error);
+        }
         self.logger.log(
             "INFO",
             &format!("Total unique products found: {}", rows.len()),
@@ -390,17 +416,21 @@ impl Scraper {
                 });
             }
         });
+        let mut files = std::collections::HashMap::new();
         for (i, result) in results.into_inner().unwrap() {
-            if let Some(filename) = result? {
-                for row in &mut rows {
-                    if cell(&row["IMGURL"]) == urls[i] {
-                        row.insert("IMAGE_FILENAME".into(), filename.clone().into());
-                        self.logger.log(
-                            "DEBUG",
-                            &format!("Downloaded image for product: {}", cell(&row["PRODUCT"])),
-                        );
-                    }
+            match result {
+                Ok(Some(filename)) => {
+                    files.insert(urls[i].clone(), filename);
                 }
+                Ok(None) => {}
+                Err(e) => self
+                    .logger
+                    .log("ERROR", &format!("Could not save image {}: {e}", urls[i])),
+            }
+        }
+        for row in &mut rows {
+            if let Some(filename) = files.get(&cell(&row["IMGURL"])) {
+                row.insert("IMAGE_FILENAME".into(), filename.clone().into());
             }
         }
         self.logger.log("INFO", "Image download completed.");

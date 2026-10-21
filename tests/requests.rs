@@ -335,3 +335,64 @@ fn output_names_preserve_urlparse_hostname_spelling() {
         assert_eq!(store_name_from_url(url), name);
     }
 }
+#[test]
+fn late_failure_keeps_rows_gathered_so_far() {
+    let server = Server::new(|p, _| {
+        if p.ends_with("page=1") {
+            catalogue(p)
+        } else {
+            (404, vec![])
+        }
+    });
+    let temp = tempfile::tempdir_in(std::env::current_dir().unwrap()).unwrap();
+    let s = scraper(&server, &temp, &["socks"]);
+    let folder = output_folder(&s.settings).unwrap();
+    assert!(s.run(&folder).is_err());
+    let mut reader = csv::Reader::from_path(folder.join("127_shopify_products.csv")).unwrap();
+    assert_eq!(reader.records().count(), 2);
+}
+#[test]
+fn trailing_slash_in_store_url_is_not_doubled() {
+    let server = Server::new(|p, _| catalogue(p));
+    let temp = tempfile::tempdir_in(std::env::current_dir().unwrap()).unwrap();
+    let mut s = Settings::parse_from(["shopify-scraper", &format!("{}/", server.url), "-d", "0"]);
+    s.collections = vec!["socks".into()];
+    let s = Scraper::new(s, Logger::new(&temp.path().join("t.log"), 3).unwrap()).unwrap();
+    let rows = s.collect().unwrap();
+    assert!(products::cell(&rows[0]["URL"]).ends_with("/products/sock"));
+    assert!(!products::cell(&rows[0]["URL"]).contains("//products"));
+    assert!(server.requests.lock().unwrap()[0].starts_with("GET /collections/socks/"));
+}
+#[test]
+fn unsavable_image_does_not_abort_the_export() {
+    use std::sync::{Arc, Mutex};
+    let base = Arc::new(Mutex::new(String::new()));
+    let endpoint = base.clone();
+    let server = Server::new(move |path, _| {
+        if path.contains("products.json") {
+            if path.ends_with("page=2") {
+                return (200, br#"{"products":[]}"#.to_vec());
+            }
+            let host = endpoint.lock().unwrap();
+            let long = "x".repeat(300);
+            let products = [("one", "ok.jpg".to_string()), ("two", format!("{long}.jpg"))]
+                .iter()
+                .map(|(h, f)| json!({"title":h,"handle":h,"images":[{"src":format!("{host}/{f}")}],"variants":[{"title":"Default Title"}]}))
+                .collect::<Vec<_>>();
+            return (200, json!({"products":products}).to_string().into_bytes());
+        }
+        (200, b"img".to_vec())
+    });
+    *base.lock().unwrap() = server.url.clone();
+    let temp = tempfile::tempdir_in(std::env::current_dir().unwrap()).unwrap();
+    let s = scraper(&server, &temp, &["socks"]);
+    let folder = output_folder(&s.settings).unwrap();
+    s.run(&folder).unwrap();
+    let mut reader = csv::Reader::from_path(folder.join("127_shopify_products.csv")).unwrap();
+    let rows = reader
+        .records()
+        .collect::<std::result::Result<Vec<_>, _>>()
+        .unwrap();
+    assert_eq!(&rows[0][19], "ok.jpg");
+    assert_eq!(&rows[1][19], "");
+}
