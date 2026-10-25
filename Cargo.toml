@@ -3,7 +3,7 @@ name = "shopify-scraper"
 version = "1.0.0"
 edition = "2021"
 authors = ["Jan Alexandr Kopřiva"]
-license = "MIT"
+license = "AGPL-3.0-or-later"
 description = "Exports the product feed of any Shopify store."
 
 [dependencies]

@@ -2,8 +2,7 @@
 // File: lib.rs
 // Description: Requests, pagination, logging, image downloads and CSV export.
 // Author: Jan Alexandr Kopřiva
-// License: MIT
-
+// License: AGPL-3.0-or-later
 pub mod auth;
 pub mod products;
 pub mod response;

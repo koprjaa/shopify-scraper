@@ -2,7 +2,7 @@
 // File: tests/cli.rs
 // Description: CLI exit codes, defaults, files and logging.
 // Author: Jan Alexandr Kopřiva
-// License: MIT
+// License: AGPL-3.0-or-later
 mod common;
 use clap::Parser;
 use shopify_scraper::Settings;

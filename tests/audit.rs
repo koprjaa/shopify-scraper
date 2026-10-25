@@ -2,7 +2,7 @@
 // File: tests/audit.rs
 // Description: Regression cases confirmed by differential runs of the original CLI.
 // Author: Jan Alexandr Kopřiva
-// License: MIT
+// License: AGPL-3.0-or-later
 mod common;
 use clap::Parser;
 use serde_json::json;

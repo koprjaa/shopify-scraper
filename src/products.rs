@@ -2,8 +2,7 @@
 // File: products.rs
 // Description: Turns a Shopify product into CSV rows.
 // Author: Jan Alexandr Kopřiva
-// License: MIT
-
+// License: AGPL-3.0-or-later
 use serde_json::Value;
 use std::{collections::BTreeMap, sync::OnceLock};
 pub type Row = BTreeMap<String, Value>;

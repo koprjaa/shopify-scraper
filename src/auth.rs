@@ -2,7 +2,7 @@
 // File: auth.rs
 // Description: Preserve requests' optional environment and netrc authentication.
 // Author: Jan Alexandr Kopřiva
-// License: MIT
+// License: AGPL-3.0-or-later
 use std::{fs, path::PathBuf};
 
 pub fn credentials(url: &str) -> Option<(String, String)> {
